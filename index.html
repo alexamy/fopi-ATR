@@ -4,17 +4,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>ART метод</title>
   <link rel="stylesheet" href="style.css">
-  <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.3.3/rxjs.umd.min.js"></script>
 </head>
   <body>
   <div class="inputs">
-    <div class="left"></div>
-    <div class="right"></div>
+    <div class="inputs__left">
+      <div class="inputs-table">
+        <div class="inputs-table__row">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+        </div>
+        <div class="inputs-table__row">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+        </div>
+        <div class="inputs-table__row">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+        </div>
+        <div class="inputs-table__row">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+          <input class="inputs-table__input" type="text" size="1" maxlength="1">
+        </div>
+      </div>
+    </div>
+    <div class="inputs__right">
+      <div class="results-table">
+        <div class="results-table__row">
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+        </div>
+        <div class="results-table__row">
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+        </div>
+        <div class="results-table__row">
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+        </div>
+        <div class="results-table__row">
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+          <span class="results-table__label">1</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="bottom"></div>
+  <div class="bottom">
+    <div class="sum-info">
+    </div>
+    <div class="radios">
+      <input class="radios__horizontal" type="radio" name="sum-type" value="horizontal" checked> Горизонталь <br/>
+      <input class="radios__vertical" type="radio" name="sum-type" value="vertical"> Вертикаль <br/>
+      <input class="radios__diagonal1" type="radio" name="sum-type" value="diagonal1"> Диагональ 1 <br/> 
+      <input class="radios__diagonal2" type="radio" name="sum-type" value="diagonal2"> Диагональ 2 <br/>
+    </div>
+    <div class="buttons">
+    <button class="buttons__iterate">Итерация</button>
+    <button class="buttons__reset">Сброс</button>
+    </div>
+  </div>
   </body>
   <script type="text/javascript" src="script.js"></script>
 </html>
