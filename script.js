@@ -6,16 +6,18 @@ $(document).ready(function() {
   var o         = rxjs.operators;
   
   // elements
-  var inputs = $('.inputs-table__input');
-  var labels = $('.results-table__label');
-  var radios = $('.radios__radio');
-  var bIter  = $('.buttons__iterate');
-  var bReset = $('.buttons__reset');
+  var inputs   = $('.inputs-table__input');
+  var labels   = $('.results-table__label');
+  var radios   = $('.radios__radio');
+  var bIter    = $('.buttons__iterate');
+  var bNextDir = $('.buttons__next-dir');
+  var bReset   = $('.buttons__reset');
 
   // streams 
-  var bIterClick  = fromEvent(bIter,  'click');
-  var bResetClick = fromEvent(bReset, 'click');
-  var inputsKeyup = merge.apply(this, inputs.map(function(i,e) { return fromEvent(e, 'keyup'); }));
+  var bIterClick    = fromEvent(bIter, 'click');
+  var bNextDirClick = fromEvent(bNextDir, 'click');
+  var bResetClick   = fromEvent(bReset, 'click');
+  var inputsKeyup   = merge.apply(this, inputs.map(function(i,e) { return fromEvent(e, 'keyup'); }));
   
   // functions helper
   var resetLabels = function() {
@@ -44,26 +46,33 @@ $(document).ready(function() {
     diagonalLeft:  [[4,1], [8,5,2], [12,9,6,3], [13,10,7], [14,11]],
     diagonalRight: [[7,2], [11,6,1], [15,10,5,0], [14,9,4], [13,8]]
   }
-  
   var getInputValues = function() {
     return inputs.map(function(i,e) { return parseInt($(e).val()) || 0 });
   }
   var getValues = function() {
     return labels.map(function(i,e) { return parseFloat($(e).text()) || 0 });
   }
+  var sumReducer = function(numbers) { return function(acc, i) { return acc + numbers[i]; } };
+  
+  var iterateIdxs = function(model, approx) { return function(idxs) {
+    var modelSum  = idxs.reduce(sumReducer(model), 0);
+    var approxSum = idxs.reduce(sumReducer(approx), 0);
+    var delta = modelSum - approxSum;
+    var k = delta / idxs.length;
+    idxs.forEach(function(i) { approx[i] += k; });
+  }};
   
   var iterate = function() {
-    var model = getInputValues();
+    var model  = getInputValues();
+    var approx = getValues();
     var idxsGroup = lines[whatType()];
-    
-    var sumReducer = function(acc, i) { return acc + model[i]; };
-    var sums = idxsGroup.map(function(idxs) { return idxs.reduce(sumReducer, 0) });
-    console.log(sums);
-    switchRadio();
+    idxsGroup.forEach(iterateIdxs(model, approx));
+    labels.each(function(i, e) { $(e).text(approx[i].toFixed(2)); });
   };
   
   // subscribers
-  bResetClick.subscribe(resetAll);
-  inputsKeyup.subscribe(resetLabels)
+  inputsKeyup.subscribe(resetLabels);
   bIterClick.subscribe(iterate);
+  bNextDirClick.subscribe(switchRadio);
+  bResetClick.subscribe(resetAll);
 });
