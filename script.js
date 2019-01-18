@@ -42,7 +42,7 @@ $(document).ready(function() {
     return inputs.map(function(i,e) { return parseInt($(e).val()) || 0 });
   }
   var getValues = function() {
-    return labels.map(function(i,e) { return parseInt($(e).text()) || 0 });
+    return labels.map(function(i,e) { return parseFloat($(e).text()) || 0 });
   }
   
   var iterate = function() {
@@ -56,6 +56,6 @@ $(document).ready(function() {
   
   // subscribers
   bResetClick.subscribe(resetAll);
-  inputsKeyup.subscribe(resetLabels);
+  inputsKeyup.subscribe(resetLabels)
   bIterClick.subscribe(iterate);
 });
