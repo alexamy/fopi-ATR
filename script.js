@@ -25,6 +25,17 @@ $(document).ready(function() {
     inputs.each(function(i,e) { $(e).val(''); });
     resetLabels();
   };
+ 
+  var whatType = function() {
+    var checked = Array.from(radios).find(function(e) { return $(e).is(':checked') });
+    return $(checked).attr('value');
+  };
+  var switchRadio = function() {
+    var rs  = Array.from(radios);
+    var i = rs.findIndex(function(e) { return $(e).is(':checked') });
+    var next = (i + 1) % 4;
+    rs.forEach(function(e, i) { $(e).prop('checked', i === next)});
+  }
   
   // functions iterate
   var lines = {
@@ -34,10 +45,6 @@ $(document).ready(function() {
     diagonalRight: [[7,2], [11,6,1], [15,10,5,0], [14,9,4], [13,8]]
   }
   
-  var whatType = function() {
-    var checked = Array.from(radios).find(function(e) { return $(e).is(':checked') });
-    return $(checked).attr('value');
-  };
   var getInputValues = function() {
     return inputs.map(function(i,e) { return parseInt($(e).val()) || 0 });
   }
@@ -52,6 +59,7 @@ $(document).ready(function() {
     var sumReducer = function(acc, i) { return acc + model[i]; };
     var sums = idxsGroup.map(function(idxs) { return idxs.reduce(sumReducer, 0) });
     console.log(sums);
+    switchRadio();
   };
   
   // subscribers
