@@ -10,8 +10,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.3.3/rxjs.umd.min.js"></script>
 </head>
   <body>
+  <div class="student-id">
+  Номер зачетки: <input class="student-id__input" type="text" size="12" maxlength="12">
+  </div>
   <div class="inputs">
     <div class="inputs__left">
+      Модель:
       <div class="inputs-table">
         <div class="inputs-table__row">
           <input class="inputs-table__input" type="text" size="1" maxlength="1">
@@ -40,38 +44,43 @@
       </div>
     </div>
     <div class="inputs__right">
+      Аппроксимация:
       <div class="results-table">
         <div class="results-table__row">
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
         </div>
         <div class="results-table__row">
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
         </div>
         <div class="results-table__row">
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
         </div>
         <div class="results-table__row">
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
-          <span class="results-table__label">1</span>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
+          <input class="results-table__label" type="text" size="1" maxlength="1" readonly>
         </div>
       </div>
     </div>
   </div>
   <div class="bottom">
+    <div class="error-info">
+      Процент ошибки: <span class="error-info__value"></span>
+    </div>
     <div class="sum-info">
     </div>
     <div class="radios">
+      Направление аппроксимации: <br/>
       <input class="radios__radio" type="radio" name="sum-type" value="horizontal" checked> Горизонталь <br/>
       <input class="radios__radio" type="radio" name="sum-type" value="vertical"> Вертикаль <br/>
       <input class="radios__radio" type="radio" name="sum-type" value="diagonalLeft"> Диагональ лев-прав <br/> 
@@ -79,7 +88,7 @@
     </div>
     <div class="buttons">
     <button class="buttons__iterate">Итерация</button>
-    <button class="buttons__next-dir">След. направление</button>
+    <button class="buttons__next-dir">Переключить направление</button>
     <button class="buttons__reset">Сброс</button>
     </div>
   </div>

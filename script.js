@@ -6,9 +6,13 @@ $(document).ready(function() {
   var o         = rxjs.operators;
   
   // elements
-  var inputs   = $('.inputs-table__input');
-  var labels   = $('.results-table__label');
-  var radios   = $('.radios__radio');
+  var inputID = $('.student-id__input');
+  var inputs  = $('.inputs-table__input');
+  var labels  = $('.results-table__label');
+  
+  var radios    = $('.radios__radio');
+  var errorInfo = $('.error-info__value');
+  
   var bIter    = $('.buttons__iterate');
   var bNextDir = $('.buttons__next-dir');
   var bReset   = $('.buttons__reset');
@@ -18,14 +22,18 @@ $(document).ready(function() {
   var bNextDirClick = fromEvent(bNextDir, 'click');
   var bResetClick   = fromEvent(bReset, 'click');
   var inputsKeyup   = merge.apply(this, inputs.map(function(i,e) { return fromEvent(e, 'keyup'); }));
+  var idKeyup       = fromEvent(inputID, 'keyup');
   
   // functions helper
   var resetLabels = function() {
-    labels.each(function(i,e) { $(e).text(''); });
+    labels.each(function(i,e) { $(e).val(''); });
+    errorInfo.text('');
   };
+  var resetID = function() { inputID.val(''); };
   var resetAll = function() {
-    inputs.each(function(i,e) { $(e).val(''); });
+    resetID();
     resetLabels();
+    inputs.each(function(i,e) { $(e).val(''); });
   };
  
   var whatType = function() {
@@ -39,7 +47,11 @@ $(document).ready(function() {
     rs.forEach(function(e, i) { $(e).prop('checked', i === next)});
   }
   
-  // functions iterate
+  var fillModel = function() {
+    var syms = inputID.val().split('');
+    inputs.each(function(i,e) { $(e).val(syms[i%syms.length])});
+  }
+
   var lines = {
     horizontal: [[0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15]],
     vertical:   [[0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15]],
@@ -50,7 +62,7 @@ $(document).ready(function() {
     return inputs.map(function(i,e) { return parseInt($(e).val()) || 0 });
   }
   var getValues = function() {
-    return labels.map(function(i,e) { return parseFloat($(e).text()) || 0 });
+    return labels.map(function(i,e) { return parseFloat($(e).val()) || 0 });
   }
   var sumReducer = function(numbers) { return function(acc, i) { return acc + numbers[i]; } };
   
@@ -61,17 +73,31 @@ $(document).ready(function() {
     var k = delta / idxs.length;
     idxs.forEach(function(i) { approx[i] += k; });
   }};
-  
+   
+  var calculateError = function() {
+    var model  = Array.from(getInputValues());
+    var approx = Array.from(getValues());
+    var modules = model.map(function(n,i) { return Math.pow(n - approx[i], 2); });
+    var idxs    = model.map(function(n,i) { return Math.pow(i+1, 2); });
+    var sumreduce = function (acc, i) { return acc + i; };
+    return Math.sqrt(modules.reduce(sumreduce, 0) / idxs.reduce(sumreduce, 0));
+  };
   var iterate = function() {
     var model  = getInputValues();
     var approx = getValues();
     var idxsGroup = lines[whatType()];
     idxsGroup.forEach(iterateIdxs(model, approx));
-    labels.each(function(i, e) { $(e).text(approx[i].toFixed(2)); });
+    labels.each(function(i, e) { $(e).val(approx[i].toFixed(2)); });
+    
+    var error = calculateError();
+    errorInfo.text((error*100).toFixed(2) + '%');
   };
   
   // subscribers
-  inputsKeyup.subscribe(resetLabels);
+  idKeyup.subscribe(fillModel);
+  inputsKeyup.subscribe(resetID);
+  merge(inputsKeyup, idKeyup).subscribe(resetLabels);
+  
   bIterClick.subscribe(iterate);
   bNextDirClick.subscribe(switchRadio);
   bResetClick.subscribe(resetAll);

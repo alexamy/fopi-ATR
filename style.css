@@ -1,12 +1,25 @@
-.inputs {
-  display: flex;
+.inputs__left {
+  float: left;
+  margin-right: 30px;
+}
+.error-info {
+  clear: both;
 }
 
-.inputs-table__input { 
+.student-id,
+.error-info {
+    padding: 10px 0;
+}
+
+.inputs-table__input, 
+.results-table__label {
+  box-sizing: border-box;
   text-align: center; 
+  font-size: 24px;
+  width:  45px;
+  height: 45px;
 }
 
 .results-table__label {
-  font-size: 24px;
-  padding: 0 10px;
+  font-size: 18px;
 }
