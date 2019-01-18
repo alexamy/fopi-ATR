@@ -52,8 +52,7 @@ $(document).ready(function() {
     var syms = inputID.val().split('');
     inputs.each(function(i,e) { $(e).val(syms[i%syms.length])});
   }
-  var calculateSums = function() {
-  }
+  var calculateSums = function() {}
   
   var lines = {
     horizontal: [[0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15]],
@@ -99,6 +98,7 @@ $(document).ready(function() {
   // subscribers
   inputIdKeyup.subscribe(fillModel);
   inputsKeyup.subscribe(resetID);
+  
   inputsUp.subscribe(resetLabels);
   inputsUp.subscribe(calculateSums);
   
