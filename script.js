@@ -22,7 +22,8 @@ $(document).ready(function() {
   var bNextDirClick = fromEvent(bNextDir, 'click');
   var bResetClick   = fromEvent(bReset, 'click');
   var inputsKeyup   = merge.apply(this, inputs.map(function(i,e) { return fromEvent(e, 'keyup'); }));
-  var idKeyup       = fromEvent(inputID, 'keyup');
+  var inputIdKeyup  = fromEvent(inputID, 'keyup');
+  var inputsUp      = merge(inputsKeyup, inputIdKeyup);
   
   // functions helper
   var resetLabels = function() {
@@ -51,7 +52,9 @@ $(document).ready(function() {
     var syms = inputID.val().split('');
     inputs.each(function(i,e) { $(e).val(syms[i%syms.length])});
   }
-
+  var calculateSums = function() {
+  }
+  
   var lines = {
     horizontal: [[0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15]],
     vertical:   [[0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15]],
@@ -64,11 +67,12 @@ $(document).ready(function() {
   var getValues = function() {
     return labels.map(function(i,e) { return parseFloat($(e).val()) || 0 });
   }
-  var sumReducer = function(numbers) { return function(acc, i) { return acc + numbers[i]; } };
+  var sumReducer = function (acc, i) { return acc + i; };
+  var sumIdxReducer = function(numbers) { return function(acc, i) { return acc + numbers[i]; } };
   
   var iterateIdxs = function(model, approx) { return function(idxs) {
-    var modelSum  = idxs.reduce(sumReducer(model), 0);
-    var approxSum = idxs.reduce(sumReducer(approx), 0);
+    var modelSum  = idxs.reduce(sumIdxReducer(model), 0);
+    var approxSum = idxs.reduce(sumIdxReducer(approx), 0);
     var delta = modelSum - approxSum;
     var k = delta / idxs.length;
     idxs.forEach(function(i) { approx[i] += k; });
@@ -79,8 +83,7 @@ $(document).ready(function() {
     var approx = Array.from(getValues());
     var modules = model.map(function(n,i) { return Math.pow(n - approx[i], 2); });
     var idxs    = model.map(function(n,i) { return Math.pow(i+1, 2); });
-    var sumreduce = function (acc, i) { return acc + i; };
-    return Math.sqrt(modules.reduce(sumreduce, 0) / idxs.reduce(sumreduce, 0));
+    return Math.sqrt(modules.reduce(sumReducer, 0) / idxs.reduce(sumReducer, 0));
   };
   var iterate = function() {
     var model  = getInputValues();
@@ -94,9 +97,10 @@ $(document).ready(function() {
   };
   
   // subscribers
-  idKeyup.subscribe(fillModel);
+  inputIdKeyup.subscribe(fillModel);
   inputsKeyup.subscribe(resetID);
-  merge(inputsKeyup, idKeyup).subscribe(resetLabels);
+  inputsUp.subscribe(resetLabels);
+  inputsUp.subscribe(calculateSums);
   
   bIterClick.subscribe(iterate);
   bNextDirClick.subscribe(switchRadio);
