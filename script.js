@@ -31,9 +31,15 @@ $(document).ready(function() {
     var checked = Array.from(radios).find(function(e) { return $(e).is(':checked') });
     return $(checked).attr('value');
   };
+  var getInputValues = function() {
+    return inputs.map(function(i,e) { return parseInt($(e).val()) || 0 });
+  }
+  var getValues = function() {
+    return labels.map(function(i,e) { return parseInt($(e).text()) || 0 });
+  }
   
   var iterate = function() {
-    console.log(whatType());
+    console.log(getInputValues());
   };
   
   // subscribers
