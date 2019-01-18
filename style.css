@@ -1,11 +1,3 @@
-.inputs__left {
-  float: left;
-  margin-right: 30px;
-}
-.error-info {
-  clear: both;
-}
-
 .student-id,
 .error-info {
     padding: 10px 0;
