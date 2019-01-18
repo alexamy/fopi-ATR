@@ -46,7 +46,12 @@ $(document).ready(function() {
   }
   
   var iterate = function() {
-    console.log(getInputValues());
+    var model = getInputValues();
+    var idxsGroup = lines[whatType()];
+    
+    var sumReducer = function(acc, i) { return acc + model[i]; };
+    var sums = idxsGroup.map(function(idxs) { return idxs.reduce(sumReducer, 0) });
+    console.log(sums);
   };
   
   // subscribers
