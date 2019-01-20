@@ -92,7 +92,7 @@ $(document).ready(function() {
     console.log('model sums', calculateSums(getInputValues()));
   };
   var logSumsApprox = function() { 
-    console.log('approx prev sums', calculateSums(getValues()));
+    console.log('approx prev sums', calculateSums(getValues())[whatType()]);
   };   
    
   var calculateError = function() {
