@@ -63,15 +63,6 @@ $(document).ready(function() {
     var syms = inputID.val().split('');
     inputs.each(function(i,e) { $(e).val(syms[i%syms.length])});
   }
-  var calculateSums = function() {
-    var model  = getInputValues();
-    var sums = {};
-    for(var dir in lines) {
-      var group = lines[dir];
-      sums[dir] = group.map(function(idxs) { return idxs.reduce(sumIdxReducer(model), 0) });
-    }
-    console.log('sums', sums);
-  }
   
   var getInputValues = function() {
     return inputs.map(function(i,e) { return parseInt($(e).val()) || 0 });
@@ -89,6 +80,21 @@ $(document).ready(function() {
     idxs.forEach(function(i) { approx[i] += k; });
   }};
    
+  var calculateSums = function(model) {
+    var sums = {};
+    for(var dir in lines) {
+      var group = lines[dir];
+      sums[dir] = group.map(function(idxs) { return idxs.reduce(sumIdxReducer(model), 0) });
+    }
+    return sums;
+  }
+  var logSumsModel = function() { 
+    console.log('model sums', calculateSums(getInputValues()));
+  };
+  var logSumsApprox = function() { 
+    console.log('approx prev sums', calculateSums(getValues()));
+  };   
+   
   var calculateError = function() {
     var model  = Array.from(getInputValues());
     var approx = Array.from(getValues());
@@ -97,6 +103,7 @@ $(document).ready(function() {
     return Math.sqrt(modules.reduce(sumReducer, 0) / idxs.reduce(sumReducer, 0));
   };
   var iterate = function() {
+    logSumsApprox();
     var model  = getInputValues();
     var approx = getValues();
     var type = whatType();
@@ -113,7 +120,7 @@ $(document).ready(function() {
   inputsKeyup.subscribe(resetID);
   
   inputsUp.subscribe(resetLabels);
-  inputsUp.subscribe(calculateSums);
+  inputsUp.subscribe(logSumsModel);
   
   bIterClick.subscribe(iterate);
   bNextDirClick.subscribe(switchRadio);
