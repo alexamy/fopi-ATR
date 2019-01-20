@@ -74,6 +74,7 @@ $(document).ready(function() {
     var approxSum = idxs.reduce(sumIdxReducer(approx), 0);
     var delta = modelSum - approxSum;
     var k = delta / idxs.length;
+    console.log('delta', k.toFixed(2));
     idxs.forEach(function(i) { approx[i] += k; });
   }};
    
@@ -87,10 +88,11 @@ $(document).ready(function() {
   var iterate = function() {
     var model  = getInputValues();
     var approx = getValues();
-    var idxsGroup = lines[whatType()];
+    var type = whatType();
+    var idxsGroup = lines[type];
+    console.log(type);
     idxsGroup.forEach(iterateIdxs(model, approx));
     labels.each(function(i, e) { $(e).val(approx[i].toFixed(2)); });
-    
     var error = calculateError();
     errorInfo.text((error*100).toFixed(2) + '%');
   };
