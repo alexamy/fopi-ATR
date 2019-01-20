@@ -25,7 +25,18 @@ $(document).ready(function() {
   var inputIdKeyup  = fromEvent(inputID, 'keyup');
   var inputsUp      = merge(inputsKeyup, inputIdKeyup);
   
-  // functions helper
+  // constants
+  var lines = {
+    horizontal: [[0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15]],
+    vertical:   [[0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15]],
+    diagonalLeft:  [[4,1], [8,5,2], [12,9,6,3], [13,10,7], [14,11]],
+    diagonalRight: [[7,2], [11,6,1], [15,10,5,0], [14,9,4], [13,8]]
+  }
+  
+  // functions
+  var sumReducer = function (acc, i) { return acc + i; };
+  var sumIdxReducer = function(numbers) { return function(acc, i) { return acc + numbers[i]; } };
+  
   var resetLabels = function() {
     labels.each(function(i,e) { $(e).val(''); });
     errorInfo.text('');
@@ -52,22 +63,22 @@ $(document).ready(function() {
     var syms = inputID.val().split('');
     inputs.each(function(i,e) { $(e).val(syms[i%syms.length])});
   }
-  var calculateSums = function() {}
-  
-  var lines = {
-    horizontal: [[0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15]],
-    vertical:   [[0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15]],
-    diagonalLeft:  [[4,1], [8,5,2], [12,9,6,3], [13,10,7], [14,11]],
-    diagonalRight: [[7,2], [11,6,1], [15,10,5,0], [14,9,4], [13,8]]
+  var calculateSums = function() {
+    var model  = getInputValues();
+    var sums = {};
+    for(var dir in lines) {
+      var group = lines[dir];
+      sums[dir] = group.map(function(idxs) { return idxs.reduce(sumIdxReducer(model), 0) });
+    }
+    console.log('sums', sums);
   }
+  
   var getInputValues = function() {
     return inputs.map(function(i,e) { return parseInt($(e).val()) || 0 });
   }
   var getValues = function() {
     return labels.map(function(i,e) { return parseFloat($(e).val()) || 0 });
   }
-  var sumReducer = function (acc, i) { return acc + i; };
-  var sumIdxReducer = function(numbers) { return function(acc, i) { return acc + numbers[i]; } };
   
   var iterateIdxs = function(model, approx) { return function(idxs) {
     var modelSum  = idxs.reduce(sumIdxReducer(model), 0);
